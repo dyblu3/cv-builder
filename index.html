@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Builder ATS-Friendly</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>CV Builder ATS-Friendly</h1>
+            <p>Buat CV yang mudah dibaca oleh sistem ATS (Applicant Tracking System)</p>
+            
+            <!-- Theme Toggle -->
+            <div class="theme-toggle">
+                <button id="themeToggle" class="theme-btn">🌙 Mode Gelap</button>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-text" id="progressText">0% Lengkap</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Navigation Tabs -->
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="input">📝 Input Data</button>
+                <button class="tab-btn" data-tab="preview">👁️ Preview CV</button>
+            </nav>
+
+            <!-- Input Tab -->
+            <div class="tab-content active" id="input-tab">
+                <div class="form-container">
+                    <form id="cvForm">
+                        <!-- Data Pribadi -->
+                        <section class="form-section">
+                            <h2>📋 Data Pribadi</h2>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="fullName">Nama Lengkap *</label>
+                                    <input type="text" id="fullName" name="fullName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Nomor HP *</label>
+                                    <input type="tel" id="phone" name="phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Alamat *</label>
+                                    <textarea id="address" name="address" rows="2" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthDate">Tanggal Lahir</label>
+                                    <input type="date" id="birthDate" name="birthDate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="linkedin">LinkedIn</label>
+                                    <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="github">GitHub</label>
+                                    <input type="url" id="github" name="github" placeholder="https://github.com/username">
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Pendidikan -->
+                        <section class="form-section">
+                            <h2>🎓 Pendidikan</h2>
+                            <div id="educationContainer">
+                                <div class="education-item">
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label>Nama Institusi</label>
+                                            <input type="text" name="institution" class="education-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Jurusan</label>
+                                            <input type="text" name="major" class="education-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Gelar</label>
+                                            <input type="text" name="degree" class="education-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tahun Masuk</label>
+                                            <input type="number" name="startYear" class="education-field" min="1950" max="2030">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tahun Lulus</label>
+                                            <input type="number" name="endYear" class="education-field" min="1950" max="2030">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>IPK (opsional)</label>
+                                            <input type="number" name="gpa" class="education-field" step="0.01" min="0" max="4">
+                                        </div>
+                                    </div>
+                                    <button type="button" class="remove-btn" onclick="removeEducation(this)">❌ Hapus</button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-btn" onclick="addEducation()">➕ Tambah Pendidikan</button>
+                        </section>
+
+                        <!-- Pengalaman Kerja -->
+                        <section class="form-section">
+                            <h2>💼 Pengalaman Kerja</h2>
+                            <div id="experienceContainer">
+                                <div class="experience-item">
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label>Nama Perusahaan</label>
+                                            <input type="text" name="company" class="experience-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Jabatan</label>
+                                            <input type="text" name="position" class="experience-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tanggal Mulai</label>
+                                            <input type="month" name="startDate" class="experience-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tanggal Selesai</label>
+                                            <input type="month" name="endDate" class="experience-field">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="current" class="current-job"> Masih bekerja
+                                            </label>
+                                        </div>
+                                        <div class="form-group full-width">
+                                            <label>Deskripsi Pekerjaan/Pencapaian</label>
+                                            <textarea name="description" class="experience-field" rows="3" placeholder="Jelaskan tanggung jawab dan pencapaian Anda..."></textarea>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="remove-btn" onclick="removeExperience(this)">❌ Hapus</button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-btn" onclick="addExperience()">➕ Tambah Pengalaman</button>
+                        </section>
+
+                        <!-- Keahlian -->
+                        <section class="form-section">
+                            <h2>⚡ Keahlian</h2>
+                            <div id="skillsContainer">
+                                <div class="skill-item">
+                                    <div class="skill-input">
+                                        <input type="text" name="skillName" class="skill-field" placeholder="Nama keahlian">
+                                        <div class="rating">
+                                            <span>Rating:</span>
+                                            <div class="stars" data-rating="0">
+                                                <span class="star" data-value="1">⭐</span>
+                                                <span class="star" data-value="2">⭐</span>
+                                                <span class="star" data-value="3">⭐</span>
+                                                <span class="star" data-value="4">⭐</span>
+                                                <span class="star" data-value="5">⭐</span>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="remove-btn" onclick="removeSkill(this)">❌</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="add-btn" onclick="addSkill()">➕ Tambah Keahlian</button>
+                        </section>
+
+                        <!-- Sertifikat/Kursus -->
+                        <section class="form-section">
+                            <h2>🏆 Sertifikat/Kursus</h2>
+                            <div id="certificatesContainer">
+                                <div class="certificate-item">
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label>Nama Kursus/Sertifikat</label>
+                                            <input type="text" name="courseName" class="certificate-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Lembaga</label>
+                                            <input type="text" name="institution" class="certificate-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tahun</label>
+                                            <input type="number" name="year" class="certificate-field" min="1950" max="2030">
+                                        </div>
+                                    </div>
+                                    <button type="button" class="remove-btn" onclick="removeCertificate(this)">❌ Hapus</button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-btn" onclick="addCertificate()">➕ Tambah Sertifikat</button>
+                        </section>
+
+                        <!-- Bahasa -->
+                        <section class="form-section">
+                            <h2>🌍 Bahasa</h2>
+                            <div id="languagesContainer">
+                                <div class="language-item">
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label>Nama Bahasa</label>
+                                            <input type="text" name="languageName" class="language-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tingkat Kemahiran</label>
+                                            <select name="proficiency" class="language-field">
+                                                <option value="">Pilih tingkat</option>
+                                                <option value="Pemula">Pemula</option>
+                                                <option value="Menengah">Menengah</option>
+                                                <option value="Mahir">Mahir</option>
+                                                <option value="Fasih">Fasih</option>
+                                                <option value="Native">Native</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="remove-btn" onclick="removeLanguage(this)">❌ Hapus</button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-btn" onclick="addLanguage()">➕ Tambah Bahasa</button>
+                        </section>
+
+                        <!-- Action Buttons -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-save" onclick="saveData()">💾 Simpan Data</button>
+                            <button type="button" class="btn btn-reset" onclick="resetData()">🔄 Reset Data</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Preview Tab -->
+            <div class="tab-content" id="preview-tab">
+                <div class="preview-container">
+                    <div class="preview-actions">
+                        <button class="btn btn-primary" onclick="downloadPDF()">📄 Download PDF</button>
+                        <button class="btn btn-secondary" onclick="updatePreview()">🔄 Update Preview</button>
+                    </div>
+                    
+                    <div class="cv-preview" id="cvPreview">
+                        <!-- CV content will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
